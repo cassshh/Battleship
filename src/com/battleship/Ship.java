@@ -3,7 +3,7 @@ package com.battleship;
 /**
  * Created by casvd on 30-3-2017.
  */
-class Ship {
+public class Ship {
     private String name;
     private int length;
 

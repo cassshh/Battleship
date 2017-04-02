@@ -5,7 +5,7 @@ import java.util.Scanner;
 /**
  * Created by casvd on 30-3-2017.
  */
-class Controller {
+public class Controller {
 
     private static Controller instance;
     private static UI ui;
@@ -52,17 +52,32 @@ class Controller {
 
     private void setupGame(Player player) {
         ui.println("Setting up the board for " + player.getName());
+        printBoard(player);
         Iterable<Ship> ships = player.shipIterable();
         listShips(ships);
         for (Ship ship : ships) {
-            int[] pos = new int[] {-1, -1};
+            int[] pos = {-1, -1};
             while (pos[0] < 0 || pos[1] < 0) {
                 ui.print("Position of " + ship.getName() + " (" + ship.getLength() + ") :");
                 String input = reader.next();
                 if(validPosition(input)) {
-                    pos = inputToPosition(input);
-                    ui.println("Input (" + input + ") set");
-                    //TODO Set ship on grid and check for location...
+                    int[] temp = inputToPosition(input);
+                    if(player.isPositionAvailable(temp)){
+                        boolean[] directions = player.getDirections(temp, ship);
+                        if(directions[0]){
+                            ui.println("Up is freeee...");
+                        }if(directions[1]){
+                            ui.println("Right is freeee...");
+                        }if(directions[2]){
+                            ui.println("Down is freeee...");
+                        }if(directions[3]){
+                            ui.println("Left is freeee...");
+                        }
+                        //TODO Set ship on grid
+                        pos = temp;
+                    } else {
+                        ui.println("Input (" + input + ") is not available (:");
+                    }
                 } else {
                     ui.println("Input (" + input + ") is not valid...");
                 }
@@ -92,8 +107,28 @@ class Controller {
         int[] pos = new int[2];
         char posX = input.charAt(0);
         String posY = input.substring(1);
-        pos[0] = (int)posX - (int)'a' + 1;
+        pos[0] = (int)posX - (int)'a';
         pos[1] = Integer.parseInt(posY);
         return pos;
+    }
+
+    private void printBoard(Player player) {
+        Field[][] grid = player.getGrid().getGrid();
+        for (int i = 0; i <= grid.length; i ++){
+            ui.print(i == 0 ? "[ ]" :"[" + i + "]");
+        }
+        ui.println("");
+        for (int x = 0; x < grid.length; x++) {
+            char c = (char)((int)'a' + x);
+            ui.print("[" + c + "]");
+            for (Field field: grid[x]) {
+                if(field instanceof Water) {
+                    ui.print("[ ]");
+                } else if (field instanceof ShipComponent) {
+                    ui.print(UI.ANSI_CYAN + "[X]" + UI.ANSI_RESET);
+                }
+            }
+            ui.println("");
+        }
     }
 }

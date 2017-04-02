@@ -1,11 +1,9 @@
 package com.battleship;
 
-import java.util.Arrays;
-
 /**
  * Created by casvd on 30-3-2017.
  */
-class Player {
+public class Player {
     private String name;
     private Grid grid;
 
@@ -24,5 +22,17 @@ class Player {
 
     void hit(int x, int y) {
         grid.hit(x, y);
+    }
+
+    boolean isPositionAvailable(int[] pos) {
+        return grid.isPositionAvailable(pos);
+    }
+
+    boolean[] getDirections(int[] pos, Ship ship) {
+        return grid.getDirections(pos, ship);
+    }
+
+    Grid getGrid() {
+        return grid;
     }
 }
