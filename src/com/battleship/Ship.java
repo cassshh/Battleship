@@ -1,7 +1,7 @@
 package com.battleship;
 
 /**
- * Created by casvd on 30-3-2017.
+ * Created by casvd on 3-4-2017.
  */
 public class Ship {
     private String name;
@@ -12,11 +12,11 @@ public class Ship {
         this.length = length;
     }
 
-    String getName() {
+    public String GetName() {
         return name;
     }
 
-    int getLength () {
+    public int GetLength() {
         return length;
     }
 }

@@ -1,134 +1,161 @@
 package com.battleship;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 /**
- * Created by casvd on 30-3-2017.
+ * Created by casvd on 3-4-2017.
  */
 public class Controller {
-
-    private static Controller instance;
-    private static UI ui;
-    private Scanner reader = new Scanner(System.in);
-
     private Player player1;
     private Player player2;
+    private Scanner reader = new Scanner(System.in);
 
-    private Controller() {
-        ui = UI.getInstance();
-        setupPlayers();
-        setupGame(player1);
-        setupGame(player2);
+    public void SetupPlayers() {
+        while (player1 == null) player1 = SetupPlayer("1");
+        while (player2 == null) player2 = SetupPlayer("2");
     }
 
-    static Controller getInstance() {
-        if (instance == null) instance = new Controller();
-        return instance;
+    private Player SetupPlayer(String id) {
+        System.out.printf("Player %s: ", id);
+        String name = reader.next();
+        if (name.isEmpty()) return null;
+        return new Player(name);
     }
 
-    private void setupPlayers() {
-        ui.println("Setting up the Players...");
-        ui.println("Please insert player names");
-        while (player1 == null) {
-            ui.print("Player 1: ");
-            String name = reader.next();
-            if(name.isEmpty()) return;
-            player1 = new Player(name);
-        }
-        while (player2 == null) {
-            ui.print("Player 2: ");
-            String name = reader.next();
-            if(name.isEmpty()) return;
-            player2 = new Player(name);
-        }
-        ui.println("Player names set");
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        ui.clear();
+    public void SetupBoards() {
+        SetupBoard(player1);
+        SetupBoard(player2);
     }
 
-    private void setupGame(Player player) {
-        ui.println("Setting up the board for " + player.getName());
-        printBoard(player);
-        Iterable<Ship> ships = player.shipIterable();
-        listShips(ships);
-        for (Ship ship : ships) {
-            int[] pos = {-1, -1};
-            while (pos[0] < 0 || pos[1] < 0) {
-                ui.print("Position of " + ship.getName() + " (" + ship.getLength() + ") :");
-                String input = reader.next();
-                if(validPosition(input)) {
-                    int[] temp = inputToPosition(input);
-                    if(player.isPositionAvailable(temp)){
-                        boolean[] directions = player.getDirections(temp, ship);
-                        if(directions[0]){
-                            ui.println("Up is freeee...");
-                        }if(directions[1]){
-                            ui.println("Right is freeee...");
-                        }if(directions[2]){
-                            ui.println("Down is freeee...");
-                        }if(directions[3]){
-                            ui.println("Left is freeee...");
-                        }
-                        //TODO Set ship on grid
-                        pos = temp;
-                    } else {
-                        ui.println("Input (" + input + ") is not available (:");
-                    }
-                } else {
-                    ui.println("Input (" + input + ") is not valid...");
+    private void SetupBoard(Player player) {
+        System.out.printf("[%s] Setting up board %n", player.GetName());
+        player.InitBoard();
+        PrintBoard(player);
+        SetupShips(player);
+    }
+
+    private void PrintBoard(Player player) {
+        Field[][] board = player.GetBoard();
+        int sizeX = board.length;
+        for (int i = 0; i <= sizeX; i++) {
+            System.out.print(i == 0 ? "[ ]" : "[" + i + "]");
+        }
+        System.out.println();
+        for (int i = 0; i < sizeX; i++) {
+            char c = (char) ((int) 'a' + i);
+            System.out.print("[" + c + "]");
+
+            int sizeY = board[i].length;
+            for (int j = 0; j < sizeY; j++) {
+                //System.out.print("["+ i + "|" + j +"]");
+                Field field = board[i][j];
+                if (field instanceof Water) {
+                    System.out.print("[ ]");
+                } else if (field instanceof ShipComponent) {
+                    System.out.print("[X]");
                 }
             }
+            System.out.println();
         }
     }
 
-    private void listShips (Iterable<Ship> ships) {
-        ui.println("====================");
+    private void SetupShips(Player player) {
+        Ship[] ships = player.GetShips();
+        PrintShips(ships);
         for (Ship ship : ships) {
-            ui.println(" (" + ship.getLength() + ") " + ship.getName());
+            SetupShip(player, ship);
+            PrintBoard(player);
         }
-        ui.println("====================");
     }
 
-    private boolean validPosition(String position) {
-        if(position.length() == 2 || position.length() == 3) {
-            int[] pos = inputToPosition(position);
-            if(pos[0] >= 0 && pos[0] < 10 && pos[1] > 0 && pos[1] <= 10) {
-                return true;
+    private void SetupShip(Player player, Ship ship) {
+        System.out.print("Position of " + ship.GetName() + " (" + ship.GetLength() + ") :");
+        String inputPosition = reader.next();
+        int[] pos = InputToPosition(inputPosition);
+        if (!IsPositionInRange(pos, player.GetBoard())) SetupShip(player, ship);
+
+        List<String> directions = new ArrayList<>();
+        if (player.CanPlaceShip(pos[0], pos[1], Board.UP, ship.GetLength())) {
+            directions.add("Up");
+        }
+        if (player.CanPlaceShip(pos[0], pos[1], Board.RIGHT, ship.GetLength())) {
+            directions.add("Right");
+        }
+        if (player.CanPlaceShip(pos[0], pos[1], Board.DOWN, ship.GetLength())) {
+            directions.add("Down");
+        }
+        if (player.CanPlaceShip(pos[0], pos[1], Board.LEFT, ship.GetLength())) {
+            directions.add("Left");
+        }
+
+        boolean isPlaced = false;
+        if (directions.size() > 0) {
+            while (!isPlaced) {
+                for (String dir : directions) {
+                    System.out.printf("- %s %n", dir);
+                }
+                System.out.print("Direction: ");
+                String inputDirection = reader.next();
+                if (player.CanPlaceShip(pos[0], pos[1], InputDirectionToPosition(inputDirection), ship.GetLength())) {
+                    //Set Ship
+                    player.PlaceShip(pos[0], pos[1], InputDirectionToPosition(inputDirection), ship);
+                    System.out.println("Good stuff pirate");
+                    isPlaced = true;
+                } else {
+                    System.out.println("That wasnt an option ya fuckn weapon");
+                }
             }
+        } else {
+            System.out.println("Did you even try... No places here mate...");
+            SetupShip(player, ship);
         }
-        return false;
     }
 
-    private int[] inputToPosition(String input){
-        int[] pos = new int[2];
-        char posX = input.charAt(0);
-        String posY = input.substring(1);
-        pos[0] = (int)posX - (int)'a';
-        pos[1] = Integer.parseInt(posY);
+    private void PrintShips(Ship[] ships) {
+        for (Ship ship : ships) {
+            System.out.println(" (" + ship.GetLength() + ") " + ship.GetName());
+        }
+    }
+
+    private int[] InputToPosition(String input) {
+        int[] pos = {-1, -1};
+        char posY = input.charAt(0);
+        String posX = input.substring(1);
+        pos[0] = (int) posY - (int) 'a';
+        try {
+            pos[1] = Integer.parseInt(posX) - 1;
+        } catch (NumberFormatException ex) {
+            System.out.println("Watch your input bro");
+        }
         return pos;
     }
 
-    private void printBoard(Player player) {
-        Field[][] grid = player.getGrid().getGrid();
-        for (int i = 0; i <= grid.length; i ++){
-            ui.print(i == 0 ? "[ ]" :"[" + i + "]");
-        }
-        ui.println("");
-        for (int x = 0; x < grid.length; x++) {
-            char c = (char)((int)'a' + x);
-            ui.print("[" + c + "]");
-            for (Field field: grid[x]) {
-                if(field instanceof Water) {
-                    ui.print("[ ]");
-                } else if (field instanceof ShipComponent) {
-                    ui.print(UI.ANSI_CYAN + "[X]" + UI.ANSI_RESET);
-                }
-            }
-            ui.println("");
+    private boolean IsPositionInRange(int[] pos, Field[][] board) {
+        int y = pos[0];
+        int x = pos[1];
+        if (y >= 0 && y < board.length
+                && x >= 0 && x < board[y].length) return true;
+        return false;
+    }
+
+    private int InputDirectionToPosition(String input) {
+        switch (input.toLowerCase()) {
+            case "u":
+            case "up":
+                return Board.UP;
+            case "r":
+            case "right":
+                return Board.RIGHT;
+            case "d":
+            case "down":
+                return Board.DOWN;
+            case "l":
+            case "left":
+                return Board.LEFT;
+            default:
+                return -1;
         }
     }
 }

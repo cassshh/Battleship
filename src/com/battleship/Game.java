@@ -1,13 +1,14 @@
 package com.battleship;
 
 /**
- * Created by casvd on 30-3-2017.
+ * Created by casvd on 3-4-2017.
  */
 public class Game {
 
-    private static Controller controller;
-
     public static void main(String[] args){
-        controller = Controller.getInstance();
+        ControllerFacade controller = new ControllerFacade(new Controller());
+        //Controller actions
+        controller.SetupGame();
+        controller.Play();
     }
 }

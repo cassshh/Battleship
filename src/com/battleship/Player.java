@@ -1,38 +1,38 @@
 package com.battleship;
 
 /**
- * Created by casvd on 30-3-2017.
+ * Created by casvd on 3-4-2017.
  */
 public class Player {
     private String name;
-    private Grid grid;
+    private Board board;
 
-    Player(String name) {
+    public Player(String name) {
         this.name = name;
-        grid = new Grid();
+        this.board = new Board();
     }
 
-    String getName() {
+    public String GetName() {
         return name;
     }
 
-    Iterable<Ship> shipIterable () {
-        return grid.shipIterable();
+    public Field[][] GetBoard() {
+        return board.GetBoard();
     }
 
-    void hit(int x, int y) {
-        grid.hit(x, y);
+    public void InitBoard() {
+        board.InitBoard();
     }
 
-    boolean isPositionAvailable(int[] pos) {
-        return grid.isPositionAvailable(pos);
+    public Ship[] GetShips(){
+        return board.GetShips();
     }
 
-    boolean[] getDirections(int[] pos, Ship ship) {
-        return grid.getDirections(pos, ship);
+    public boolean CanPlaceShip(int y, int x, int dir, int length){
+        return board.CanPlaceShip(y, x, dir, length);
     }
 
-    Grid getGrid() {
-        return grid;
+    public void PlaceShip(int y, int x, int dir, Ship ship){
+        board.PlaceShip(y, x, dir, ship);
     }
 }

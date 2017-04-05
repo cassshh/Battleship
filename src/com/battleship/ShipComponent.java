@@ -1,11 +1,11 @@
 package com.battleship;
 
 /**
- * Created by casvd on 20-3-2017.
+ * Created by casvd on 3-4-2017.
  */
 public class ShipComponent implements Field {
     @Override
-    public String hit() {
-        return "BAM";
+    public String Hit() {
+        return "Ouchh";
     }
 }
