@@ -34,10 +34,10 @@ public class Board {
     public void InitShips() {
         ShipFactory shipFactory = new ShipFactory();
         ships = new Ship[]{
-                /*shipFactory.MakeShip(ShipType.AIRCRAFT_CARRIER),
+                shipFactory.MakeShip(ShipType.AIRCRAFT_CARRIER),
                 shipFactory.MakeShip(ShipType.BATTLESHIP),
                 shipFactory.MakeShip(ShipType.SUBMARINE),
-                shipFactory.MakeShip(ShipType.DESTROYER),*/
+                shipFactory.MakeShip(ShipType.DESTROYER),
                 shipFactory.MakeShip(ShipType.PATROL_BOAT)
         };
     }
