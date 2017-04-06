@@ -1,5 +1,7 @@
 package com.battleship;
 
+import com.battleship.ships.Ship;
+
 /**
  * Created by casvd on 3-4-2017.
  */

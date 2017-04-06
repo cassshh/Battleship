@@ -1,5 +1,7 @@
 package com.battleship;
 
+import com.battleship.ships.Ship;
+
 /**
  * Created by casvd on 3-4-2017.
  */
@@ -7,7 +9,6 @@ public class Board {
     private final int SIZE = 10;
     private Field[][] board;
     private Ship[] ships;
-
 
     public final static int UP = 0;
     public final static int RIGHT = 1;
@@ -31,12 +32,13 @@ public class Board {
     }
 
     public void InitShips() {
+        ShipFactory shipFactory = new ShipFactory();
         ships = new Ship[]{
-                new Ship("Aircraft Carrier", 5),
-                new Ship("Battleship", 4),
-                new Ship("Submarine", 3),
-                new Ship("Destroyer", 3),
-                new Ship("Patrol Boat", 2)
+                shipFactory.MakeShip(ShipType.AIRCRAFT_CARRIER),
+                shipFactory.MakeShip(ShipType.BATTLESHIP),
+                shipFactory.MakeShip(ShipType.SUBMARINE),
+                shipFactory.MakeShip(ShipType.DESTROYER),
+                shipFactory.MakeShip(ShipType.PATROL_BOAT)
         };
     }
 

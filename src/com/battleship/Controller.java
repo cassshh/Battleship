@@ -1,5 +1,7 @@
 package com.battleship;
 
+import com.battleship.ships.Ship;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
