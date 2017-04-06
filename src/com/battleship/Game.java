@@ -10,5 +10,6 @@ public class Game {
         //Controller actions
         controller.SetupGame();
         controller.Play();
+        controller.KudosToWinner();
     }
 }

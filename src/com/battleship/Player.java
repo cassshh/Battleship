@@ -1,5 +1,6 @@
 package com.battleship;
 
+import com.battleship.fields.Field;
 import com.battleship.ships.Ship;
 
 /**
@@ -36,5 +37,9 @@ public class Player {
 
     public void PlaceShip(int y, int x, int dir, Ship ship){
         board.PlaceShip(y, x, dir, ship);
+    }
+
+    public String Hit(int[] pos) {
+        return board.Hit(pos);
     }
 }

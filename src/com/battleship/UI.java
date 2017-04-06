@@ -4,7 +4,6 @@ package com.battleship;
  * Created by casvd on 30-3-2017.
  */
 public class UI {
-    private static UI instance;
 
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_BLACK = "\u001B[30m";
@@ -16,23 +15,19 @@ public class UI {
     public static final String ANSI_CYAN = "\u001B[36m";
     public static final String ANSI_WHITE = "\u001B[37m";
 
-    static UI getInstance() {
-        if(instance == null) instance = new UI();
-        return instance;
+    public static void print(Object obj) {
+        System.out.print(obj);
     }
 
-    private UI() {
+    public static void println(Object obj) {
+        System.out.println(obj);
     }
 
-    void print(String string) {
-        System.out.print(string);
+    public static void printf(Object obj, Object... vars) {
+        System.out.printf((String) obj, vars);
     }
 
-    void println(String string) {
-        System.out.println(string);
-    }
-
-    final void clear()
+    public static final void clear()
     {
         try
         {

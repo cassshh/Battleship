@@ -1,5 +1,6 @@
 package com.battleship;
 
+import com.battleship.fields.FieldState;
 import com.battleship.ships.*;
 
 /**
@@ -20,7 +21,26 @@ public class ShipFactory {
             case PATROL_BOAT:
                 return new PatrolBoat();
             default:
-                return null;
+                return new Ship() {
+                    @Override
+                    public String GetName() {
+                        return "Stealthy McStealthFace";
+                    }
+
+                    @Override
+                    public int GetLength() {
+                        return 0;
+                    }
+
+                    @Override
+                    public int GetHealth() {
+                        return 0;
+                    }
+
+                    @Override
+                    public void update(FieldState fieldState) {
+                    }
+                };
         }
     }
 }

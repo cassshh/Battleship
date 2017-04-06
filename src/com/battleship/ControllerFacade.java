@@ -16,7 +16,14 @@ public class ControllerFacade {
         controller.SetupBoards();
     }
 
-    public void Play(){
+    public void Play() {
         //Play stuff
+        while (controller.IsGameOnGoing()) {
+            controller.Play();
+        }
+    }
+
+    public void KudosToWinner() {
+        controller.KudosToWinner();
     }
 }

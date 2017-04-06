@@ -1,7 +1,9 @@
 package com.battleship;
 
+import com.battleship.fields.Field;
+import com.battleship.fields.ShipComponent;
+import com.battleship.fields.Water;
 import com.battleship.ships.Ship;
-
 /**
  * Created by casvd on 3-4-2017.
  */
@@ -24,8 +26,6 @@ public class Board {
         board = new Field[SIZE][SIZE];
         for (int y = 0; y < board.length; y++) {
             for (int x = 0; x < board[y].length; x++) {
-                /*int r = new Random().nextInt(5);
-                board[y][x] = r == 1 ? new ShipComponent() : new Water();*/
                 board[y][x] = new Water();
             }
         }
@@ -34,10 +34,10 @@ public class Board {
     public void InitShips() {
         ShipFactory shipFactory = new ShipFactory();
         ships = new Ship[]{
-                shipFactory.MakeShip(ShipType.AIRCRAFT_CARRIER),
+                /*shipFactory.MakeShip(ShipType.AIRCRAFT_CARRIER),
                 shipFactory.MakeShip(ShipType.BATTLESHIP),
                 shipFactory.MakeShip(ShipType.SUBMARINE),
-                shipFactory.MakeShip(ShipType.DESTROYER),
+                shipFactory.MakeShip(ShipType.DESTROYER),*/
                 shipFactory.MakeShip(ShipType.PATROL_BOAT)
         };
     }
@@ -46,7 +46,7 @@ public class Board {
         return board;
     }
 
-    public Ship[] GetShips (){
+    public Ship[] GetShips() {
         return ships;
     }
 
@@ -89,10 +89,16 @@ public class Board {
 
     public void PlaceShip(int y, int x, int dir, Ship ship) {
         for (int i = 0; i < ship.GetLength(); i++) {
-            if (dir == UP) board[y - i][x] = new ShipComponent();
-            else if (dir == RIGHT) board[y][x + i] = new ShipComponent();
-            else if (dir == DOWN) board[y + i][x] = new ShipComponent();
-            else if (dir == LEFT) board[y][x - i] = new ShipComponent();
+            ShipComponent shipComponent = new ShipComponent();
+            if (dir == UP) board[y - i][x] = shipComponent;
+            else if (dir == RIGHT) board[y][x + i] = shipComponent;
+            else if (dir == DOWN) board[y + i][x] = shipComponent;
+            else if (dir == LEFT) board[y][x - i] = shipComponent;
+            ship.AddComponent(shipComponent);
         }
+    }
+
+    public String Hit(int[] pos) {
+        return GetAt(pos[0], pos[1]).Hit();
     }
 }
