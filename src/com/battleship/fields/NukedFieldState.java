@@ -6,7 +6,7 @@ package com.battleship.fields;
 public class NukedFieldState implements FieldState {
 
     @Override
-    public boolean IsBombed() {
+    public boolean isBombed() {
         return true;
     }
 }

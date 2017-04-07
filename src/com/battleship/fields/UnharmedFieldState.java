@@ -5,7 +5,7 @@ package com.battleship.fields;
  */
 public class UnharmedFieldState implements FieldState {
     @Override
-    public boolean IsBombed() {
+    public boolean isBombed() {
         return false;
     }
 }

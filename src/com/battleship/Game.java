@@ -8,8 +8,8 @@ public class Game {
     public static void main(String[] args){
         ControllerFacade controller = new ControllerFacade(new Controller());
         //Controller actions
-        controller.SetupGame();
-        controller.Play();
-        controller.KudosToWinner();
+        controller.setupGame();
+        controller.play();
+        controller.kudosToWinner();
     }
 }

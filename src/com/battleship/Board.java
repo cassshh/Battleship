@@ -18,11 +18,11 @@ public class Board {
     public final static int LEFT = 3;
 
     public Board() {
-        InitBoard();
-        InitShips();
+        initBoard();
+        initShips();
     }
 
-    public void InitBoard() {
+    public void initBoard() {
         board = new Field[SIZE][SIZE];
         for (int y = 0; y < board.length; y++) {
             for (int x = 0; x < board[y].length; x++) {
@@ -31,31 +31,31 @@ public class Board {
         }
     }
 
-    public void InitShips() {
+    public void initShips() {
         ShipFactory shipFactory = new ShipFactory();
         ships = new Ship[]{
-                shipFactory.MakeShip(ShipType.AIRCRAFT_CARRIER),
-                shipFactory.MakeShip(ShipType.BATTLESHIP),
-                shipFactory.MakeShip(ShipType.SUBMARINE),
-                shipFactory.MakeShip(ShipType.DESTROYER),
-                shipFactory.MakeShip(ShipType.PATROL_BOAT)
+                shipFactory.makeShip(ShipType.AIRCRAFT_CARRIER),
+                shipFactory.makeShip(ShipType.BATTLESHIP),
+                shipFactory.makeShip(ShipType.SUBMARINE),
+                shipFactory.makeShip(ShipType.DESTROYER),
+                shipFactory.makeShip(ShipType.PATROL_BOAT)
         };
     }
 
-    public Field[][] GetBoard() {
+    public Field[][] getBoard() {
         return board;
     }
 
-    public Ship[] GetShips() {
+    public Ship[] getShips() {
         return ships;
     }
 
-    public boolean CanPlaceShip(int y, int x, int dir, int length) {
+    public boolean canPlaceShip(int y, int x, int dir, int length) {
         if ((dir == UP && y - length + 1 >= 0)
                 || (dir == RIGHT && x + length <= SIZE)
                 || (dir == DOWN && y + length <= SIZE)
                 || (dir == LEFT && x - length + 1 >= 0)) {
-            Field[] fields = GetFields(y, x, dir, length);
+            Field[] fields = getFields(y, x, dir, length);
             for (Field field : fields) {
                 if (field instanceof ShipComponent) {
                     //Ship is in its way. abort mission.. ABORT
@@ -68,37 +68,37 @@ public class Board {
         return false;
     }
 
-    private Field[] GetFields(int y, int x, int dir, int length) {
+    private Field[] getFields(int y, int x, int dir, int length) {
         Field[] fields = new Field[length];
         for (int i = 0; i < length; i++) {
             Field field = null;
 
-            if (dir == UP) field = GetAt(y - i, x);
-            else if (dir == RIGHT) field = GetAt(y, x + i);
-            else if (dir == DOWN) field = GetAt(y + i, x);
-            else if (dir == LEFT) field = GetAt(y, x - i);
+            if (dir == UP) field = getAt(y - i, x);
+            else if (dir == RIGHT) field = getAt(y, x + i);
+            else if (dir == DOWN) field = getAt(y + i, x);
+            else if (dir == LEFT) field = getAt(y, x - i);
 
             fields[i] = field;
         }
         return fields;
     }
 
-    private Field GetAt(int y, int x) {
+    private Field getAt(int y, int x) {
         return board[y][x];
     }
 
-    public void PlaceShip(int y, int x, int dir, Ship ship) {
-        for (int i = 0; i < ship.GetLength(); i++) {
+    public void placeShip(int y, int x, int dir, Ship ship) {
+        for (int i = 0; i < ship.getLength(); i++) {
             ShipComponent shipComponent = new ShipComponent();
             if (dir == UP) board[y - i][x] = shipComponent;
             else if (dir == RIGHT) board[y][x + i] = shipComponent;
             else if (dir == DOWN) board[y + i][x] = shipComponent;
             else if (dir == LEFT) board[y][x - i] = shipComponent;
-            ship.AddComponent(shipComponent);
+            ship.addComponent(shipComponent);
         }
     }
 
-    public String Hit(int[] pos) {
-        return GetAt(pos[0], pos[1]).Hit();
+    public String hit(int[] pos) {
+        return getAt(pos[0], pos[1]).hit();
     }
 }

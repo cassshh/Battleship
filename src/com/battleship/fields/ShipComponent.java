@@ -15,30 +15,30 @@ public class ShipComponent implements Field {
     private FieldState fieldState = new UnharmedFieldState();
 
     @Override
-    public String Hit() {
-        NotifyAllObservers();
-        if (!fieldState.IsBombed()){
-            SetFieldState(new NukedFieldState());
+    public String hit() {
+        notifyAllObservers();
+        if (!fieldState.isBombed()){
+            setFieldState(new NukedFieldState());
             return UI.ANSI_YELLOW + "*Insert explosion sounds*" + UI.ANSI_RESET;
         }
         return UI.ANSI_YELLOW + "Only in M. Bay's movies things explode twice.. git gud" + UI.ANSI_RESET;
     }
 
     @Override
-    public void SetFieldState(FieldState fieldState) {
+    public void setFieldState(FieldState fieldState) {
         this.fieldState = fieldState;
     }
 
     @Override
-    public FieldState GetFieldState() {
+    public FieldState getFieldState() {
         return fieldState;
     }
 
-    public void Attach(Observer observer) {
+    public void attach(Observer observer) {
         observers.add(observer);
     }
 
-    public void NotifyAllObservers() {
+    public void notifyAllObservers() {
         for (Observer observer : observers) {
             observer.update(fieldState);
         }

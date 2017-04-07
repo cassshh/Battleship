@@ -11,19 +11,19 @@ public class ControllerFacade {
         this.controller = controller;
     }
 
-    public void SetupGame() {
-        controller.SetupPlayers();
-        controller.SetupBoards();
+    public void setupGame() {
+        controller.setupPlayers();
+        controller.setupBoards();
     }
 
-    public void Play() {
-        //Play stuff
-        while (controller.IsGameOnGoing()) {
-            controller.Play();
+    public void play() {
+        //play stuff
+        while (controller.isGameOnGoing()) {
+            controller.play();
         }
     }
 
-    public void KudosToWinner() {
-        controller.KudosToWinner();
+    public void kudosToWinner() {
+        controller.kudosToWinner();
     }
 }

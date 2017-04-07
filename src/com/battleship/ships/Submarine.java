@@ -13,23 +13,23 @@ public class Submarine extends Ship {
     private int health = LENGTH;
 
     @Override
-    public String GetName() {
+    public String getName() {
         return NAME;
     }
 
     @Override
-    public int GetLength() {
+    public int getLength() {
         return LENGTH;
     }
 
     @Override
-    public int GetHealth() {
+    public int getHealth() {
         return health;
     }
 
     @Override
     public void update(FieldState fieldState) {
-        if(!fieldState.IsBombed() && health > 0) {
+        if(!fieldState.isBombed() && health > 0) {
             health--;
             UI.printf(UI.ANSI_RED + "%s is bein' torpedoed%n" + UI.ANSI_RESET, NAME);
         }

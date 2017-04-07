@@ -18,35 +18,35 @@ public class Controller {
     private Scanner reader = new Scanner(System.in);
     private boolean turnOne = true;
 
-    public void SetupPlayers() {
-        while (player1 == null) player1 = SetupPlayer("1");
-        while (player2 == null) player2 = SetupPlayer("2");
+    public void setupPlayers() {
+        while (player1 == null) player1 = setupPlayer("1");
+        while (player2 == null) player2 = setupPlayer("2");
     }
 
-    private Player SetupPlayer(String id) {
+    private Player setupPlayer(String id) {
        UI.printf("Player %s: ", id);
         String name = reader.next();
         if (name.isEmpty()) return null;
         return new Player(name);
     }
 
-    public void SetupBoards() {
-        SetupBoard(player1);
-        SetupBoard(player2);
+    public void setupBoards() {
+        setupBoard(player1);
+        setupBoard(player2);
     }
 
-    private void SetupBoard(Player player) {
+    private void setupBoard(Player player) {
         UI.println("========================================");
-        UI.printf(UI.ANSI_PURPLE + "[%s] Setting up board %n" + UI.ANSI_RESET, player.GetName());
-        player.InitBoard();
-        PrintBoard(player, false);
-        SetupShips(player);
+        UI.printf(UI.ANSI_PURPLE + "[%s] Setting up board %n" + UI.ANSI_RESET, player.getName());
+        player.initBoard();
+        printBoard(player, false);
+        setupShips(player);
         UI.clear();
-        Sleep(2000);
+        sleep(2000);
     }
 
-    private void PrintBoard(Player player, boolean enemy) {
-        Field[][] board = player.GetBoard();
+    private void printBoard(Player player, boolean enemy) {
+        Field[][] board = player.getBoard();
         int sizeX = board.length;
         for (int i = 0; i <= sizeX; i++) {
             UI.print(i == 0 ? "[ ]" : "[" + i + "]");
@@ -61,16 +61,16 @@ public class Controller {
                 //UI.print("["+ i + "|" + j +"]");
                 Field field = board[i][j];
                 if (enemy) {
-                    PrintFieldEnemy(field);
+                    printFieldEnemy(field);
                 } else {
-                    PrintField(field);
+                    printField(field);
                 }
             }
             UI.println("");
         }
     }
 
-    private void PrintField(Field field) {
+    private void printField(Field field) {
         if (field instanceof Water) {
             UI.print("[ ]");
         } else if (field instanceof ShipComponent) {
@@ -78,15 +78,15 @@ public class Controller {
         }
     }
 
-    private void PrintFieldEnemy(Field field) {
+    private void printFieldEnemy(Field field) {
         if (field instanceof Water) {
-            if (field.GetFieldState().IsBombed()) {
+            if (field.getFieldState().isBombed()) {
                 UI.print(UI.ANSI_BLUE + "[X]" + UI.ANSI_RESET);
             } else {
                 UI.print("[ ]");
             }
         } else if (field instanceof ShipComponent) {
-            if (field.GetFieldState().IsBombed()) {
+            if (field.getFieldState().isBombed()) {
                 UI.print(UI.ANSI_RED + "[X]" + UI.ANSI_RESET);
             } else {
                 UI.print("[ ]");
@@ -94,37 +94,37 @@ public class Controller {
         }
     }
 
-    private void SetupShips(Player player) {
-        Ship[] ships = player.GetShips();
-        PrintShips(ships);
+    private void setupShips(Player player) {
+        Ship[] ships = player.getShips();
+        printShips(ships);
         for (Ship ship : ships) {
-            SetupShip(player, ship);
-            PrintBoard(player, false);
+            setupShip(player, ship);
+            printBoard(player, false);
         }
     }
 
-    private void SetupShip(Player player, Ship ship) {
-        UI.print("Position of " + ship.GetName() + " (" + ship.GetLength() + ") :");
+    private void setupShip(Player player, Ship ship) {
+        UI.print("Position of " + ship.getName() + " (" + ship.getLength() + ") :");
         String inputPosition = reader.next();
-        int[] pos = InputToPosition(inputPosition);
-        if (!IsPositionInRange(pos, player.GetBoard())) {
+        int[] pos = inputToPosition(inputPosition);
+        if (!isPositionInRange(pos, player.getBoard())) {
             //Position invalid, try again mate
             UI.println(UI.ANSI_YELLOW + "Did ya even look at teh board ya muppet,," + UI.ANSI_RESET);
-            SetupShip(player, ship);
+            setupShip(player, ship);
             return;
         }
 
         List<String> directions = new ArrayList<>();
-        if (player.CanPlaceShip(pos[0], pos[1], Board.UP, ship.GetLength())) {
+        if (player.canPlaceShip(pos[0], pos[1], Board.UP, ship.getLength())) {
             directions.add("Up");
         }
-        if (player.CanPlaceShip(pos[0], pos[1], Board.RIGHT, ship.GetLength())) {
+        if (player.canPlaceShip(pos[0], pos[1], Board.RIGHT, ship.getLength())) {
             directions.add("Right");
         }
-        if (player.CanPlaceShip(pos[0], pos[1], Board.DOWN, ship.GetLength())) {
+        if (player.canPlaceShip(pos[0], pos[1], Board.DOWN, ship.getLength())) {
             directions.add("Down");
         }
-        if (player.CanPlaceShip(pos[0], pos[1], Board.LEFT, ship.GetLength())) {
+        if (player.canPlaceShip(pos[0], pos[1], Board.LEFT, ship.getLength())) {
             directions.add("Left");
         }
 
@@ -136,9 +136,9 @@ public class Controller {
                 }
                 UI.print("Direction: ");
                 String inputDirection = reader.next();
-                if (player.CanPlaceShip(pos[0], pos[1], InputDirectionToPosition(inputDirection), ship.GetLength())) {
+                if (player.canPlaceShip(pos[0], pos[1], inputDirectionToPosition(inputDirection), ship.getLength())) {
                     //Set Ship
-                    player.PlaceShip(pos[0], pos[1], InputDirectionToPosition(inputDirection), ship);
+                    player.placeShip(pos[0], pos[1], inputDirectionToPosition(inputDirection), ship);
                     UI.println(UI.ANSI_GREEN + "Good stuff pirate *high fives in pirate*" + UI.ANSI_RESET);
                     isPlaced = true;
                 } else {
@@ -147,17 +147,17 @@ public class Controller {
             }
         } else {
             UI.println(UI.ANSI_YELLOW + "Did you even try... No places here mate..." + UI.ANSI_RESET);
-            SetupShip(player, ship);
+            setupShip(player, ship);
         }
     }
 
-    private void PrintShips(Ship[] ships) {
+    private void printShips(Ship[] ships) {
         for (Ship ship : ships) {
-            UI.println(" (" + ship.GetLength() + ") " + ship.GetName());
+            UI.println(" (" + ship.getLength() + ") " + ship.getName());
         }
     }
 
-    private int[] InputToPosition(String input) {
+    private int[] inputToPosition(String input) {
         int[] pos = {-1, -1};
         char posY = input.charAt(0);
         String posX = input.substring(1);
@@ -170,7 +170,7 @@ public class Controller {
         return pos;
     }
 
-    private boolean IsPositionInRange(int[] pos, Field[][] board) {
+    private boolean isPositionInRange(int[] pos, Field[][] board) {
         int y = pos[0];
         int x = pos[1];
         if (y >= 0 && y < board.length
@@ -178,7 +178,7 @@ public class Controller {
         return false;
     }
 
-    private int InputDirectionToPosition(String input) {
+    private int inputDirectionToPosition(String input) {
         switch (input.toLowerCase()) {
             case "u":
             case "up":
@@ -197,61 +197,61 @@ public class Controller {
         }
     }
 
-    public boolean IsGameOnGoing() {
-        return IsPlayerStillBreathing(player1) && IsPlayerStillBreathing(player2);
+    public boolean isGameOnGoing() {
+        return isPlayerStillBreathing(player1) && isPlayerStillBreathing(player2);
     }
 
-    private boolean IsPlayerStillBreathing(Player player) {
-        for (Ship ship : player.GetShips()) {
-            if (ship.GetHealth() > 0) {
+    private boolean isPlayerStillBreathing(Player player) {
+        for (Ship ship : player.getShips()) {
+            if (ship.getHealth() > 0) {
                 return true;
             }
         }
         return false;
     }
 
-    public void Play() {
+    public void play() {
         UI.println("========================================");
         if (turnOne) {
-            PrintBoard(player2, true);
-            Play(player1, player2);
-            PrintBoard(player2, true);
+            printBoard(player2, true);
+            play(player1, player2);
+            printBoard(player2, true);
         } else {
-            PrintBoard(player1, true);
-            Play(player2, player1);
-            PrintBoard(player1, true);
+            printBoard(player1, true);
+            play(player2, player1);
+            printBoard(player1, true);
         }
         turnOne = !turnOne;
         UI.clear();
-        Sleep(2000);
+        sleep(2000);
     }
 
-    private void Play(Player player, Player enemy) {
-        UI.printf(UI.ANSI_PURPLE + "[%s] What position u trynna hit arrrr: " + UI.ANSI_RESET, player.GetName());
+    private void play(Player player, Player enemy) {
+        UI.printf(UI.ANSI_PURPLE + "[%s] What position u trynna hit arrrr: " + UI.ANSI_RESET, player.getName());
         String inputPosition = reader.next();
-        int[] pos = InputToPosition(inputPosition);
-        if (IsPositionInRange(pos, player.GetBoard())) {
-            UI.println(enemy.Hit(pos));
+        int[] pos = inputToPosition(inputPosition);
+        if (isPositionInRange(pos, player.getBoard())) {
+            UI.println(enemy.hit(pos));
         } else {
             UI.println(UI.ANSI_YELLOW + "Knob Head open yer eyes, dat aint on dis board" + UI.ANSI_RESET);
-            Play(player, enemy);
+            play(player, enemy);
         }
-        Sleep(1000);
+        sleep(1000);
     }
 
-    public void KudosToWinner() {
+    public void kudosToWinner() {
         String message = UI.ANSI_GREEN + "Kudos %s !" + UI.ANSI_RED + " Ya absobloodylutely beat up wazzock %s :)" + UI.ANSI_RESET;
-        if (IsPlayerStillBreathing(player1)) {
-            UI.printf(message, player1.GetName(), player2.GetName());
-        } else if (IsPlayerStillBreathing(player2)) {
-            UI.printf(message, player2.GetName(), player1.GetName());
+        if (isPlayerStillBreathing(player1)) {
+            UI.printf(message, player1.getName(), player2.getName());
+        } else if (isPlayerStillBreathing(player2)) {
+            UI.printf(message, player2.getName(), player1.getName());
         }
-        Sleep(2500);
+        sleep(2500);
     }
 
-    private void Sleep(int mili) {
+    private void sleep(int millis) {
         try {
-            Thread.sleep(mili);
+            Thread.sleep(millis);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

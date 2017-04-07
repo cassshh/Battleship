@@ -10,21 +10,21 @@ public class Water implements Field {
     private FieldState fieldState = new UnharmedFieldState();
 
     @Override
-    public String Hit() {
-        if (!fieldState.IsBombed()){
-            SetFieldState(new NukedFieldState());
+    public String hit() {
+        if (!fieldState.isBombed()){
+            setFieldState(new NukedFieldState());
             return UI.ANSI_CYAN + "Splooosshh!" + UI.ANSI_RESET;
         }
-        return UI.ANSI_CYAN + "Hit it again, its gonna be splooshed thrice!" + UI.ANSI_RESET;
+        return UI.ANSI_CYAN + "hit it again, its gonna be splooshed thrice!" + UI.ANSI_RESET;
     }
 
     @Override
-    public void SetFieldState(FieldState fieldState) {
+    public void setFieldState(FieldState fieldState) {
         this.fieldState = fieldState;
     }
 
     @Override
-    public FieldState GetFieldState() {
+    public FieldState getFieldState() {
         return fieldState;
     }
 }

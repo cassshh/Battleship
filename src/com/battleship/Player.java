@@ -15,31 +15,31 @@ public class Player {
         this.board = new Board();
     }
 
-    public String GetName() {
+    public String getName() {
         return name;
     }
 
-    public Field[][] GetBoard() {
-        return board.GetBoard();
+    public Field[][] getBoard() {
+        return board.getBoard();
     }
 
-    public void InitBoard() {
-        board.InitBoard();
+    public void initBoard() {
+        board.initBoard();
     }
 
-    public Ship[] GetShips(){
-        return board.GetShips();
+    public Ship[] getShips(){
+        return board.getShips();
     }
 
-    public boolean CanPlaceShip(int y, int x, int dir, int length){
-        return board.CanPlaceShip(y, x, dir, length);
+    public boolean canPlaceShip(int y, int x, int dir, int length){
+        return board.canPlaceShip(y, x, dir, length);
     }
 
-    public void PlaceShip(int y, int x, int dir, Ship ship){
-        board.PlaceShip(y, x, dir, ship);
+    public void placeShip(int y, int x, int dir, Ship ship){
+        board.placeShip(y, x, dir, ship);
     }
 
-    public String Hit(int[] pos) {
-        return board.Hit(pos);
+    public String hit(int[] pos) {
+        return board.hit(pos);
     }
 }

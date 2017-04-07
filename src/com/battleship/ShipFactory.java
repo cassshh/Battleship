@@ -8,7 +8,7 @@ import com.battleship.ships.*;
  */
 public class ShipFactory {
 
-    public Ship MakeShip(ShipType type) {
+    public Ship makeShip(ShipType type) {
         switch (type) {
             case AIRCRAFT_CARRIER:
                 return new AircraftCarrier();
@@ -23,17 +23,17 @@ public class ShipFactory {
             default:
                 return new Ship() {
                     @Override
-                    public String GetName() {
+                    public String getName() {
                         return "Stealthy McStealthFace";
                     }
 
                     @Override
-                    public int GetLength() {
+                    public int getLength() {
                         return 0;
                     }
 
                     @Override
-                    public int GetHealth() {
+                    public int getHealth() {
                         return 0;
                     }
 
