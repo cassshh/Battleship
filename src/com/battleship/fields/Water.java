@@ -2,16 +2,16 @@ package com.battleship.fields;
 
 import com.battleship.UI;
 
-/**
- * Created by casvd on 3-4-2017.
- */
 public class Water implements Field {
 
+    /**
+     * Fields
+     */
     private FieldState fieldState = new UnharmedFieldState();
 
     @Override
     public String hit() {
-        if (!fieldState.isBombed()){
+        if (!fieldState.isBombed()) {
             setFieldState(new NukedFieldState());
             return UI.ANSI_CYAN + "Splooosshh!" + UI.ANSI_RESET;
         }

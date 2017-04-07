@@ -1,21 +1,32 @@
 package com.battleship;
 
-/**
- * Created by casvd on 3-4-2017.
- */
 public class ControllerFacade {
 
+    /**
+     * Fields
+     */
     private Controller controller;
 
+    /**
+     * Constructor
+     *
+     * @param controller to control
+     */
     public ControllerFacade(Controller controller) {
         this.controller = controller;
     }
 
+    /**
+     * Setting up the game
+     */
     public void setupGame() {
         controller.setupPlayers();
         controller.setupBoards();
     }
 
+    /**
+     * Play the game
+     */
     public void play() {
         //play stuff
         while (controller.isGameOnGoing()) {
@@ -23,6 +34,9 @@ public class ControllerFacade {
         }
     }
 
+    /**
+     * Winner winner chicken dinner
+     */
     public void kudosToWinner() {
         controller.kudosToWinner();
     }

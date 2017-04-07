@@ -1,7 +1,7 @@
-package com.battleship;
+package com.battleship.ship;
 
 /**
- * Created by casvd on 6-4-2017.
+ * Ship types
  */
 public enum ShipType {
     AIRCRAFT_CARRIER,

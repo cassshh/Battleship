@@ -3,38 +3,55 @@ package com.battleship;
 import com.battleship.fields.Field;
 import com.battleship.fields.ShipComponent;
 import com.battleship.fields.Water;
-import com.battleship.ships.Ship;
+import com.battleship.ship.Ship;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-/**
- * Created by casvd on 3-4-2017.
- */
 public class Controller {
+    /**
+     * Fields
+     */
     private Player player1;
     private Player player2;
     private Scanner reader = new Scanner(System.in);
     private boolean turnOne = true;
 
+    /**
+     * Prepare the gladiator pirates
+     */
     public void setupPlayers() {
         while (player1 == null) player1 = setupPlayer("1");
         while (player2 == null) player2 = setupPlayer("2");
     }
 
+    /**
+     * Thou shall be named
+     *
+     * @param id separate player to the user
+     * @return created player
+     */
     private Player setupPlayer(String id) {
-       UI.printf("Player %s: ", id);
+        UI.printf("Player %s: ", id);
         String name = reader.next();
         if (name.isEmpty()) return null;
         return new Player(name);
     }
 
+    /**
+     * Setup up the battle fields
+     */
     public void setupBoards() {
         setupBoard(player1);
         setupBoard(player2);
     }
 
+    /**
+     * Setup battlefield for player
+     *
+     * @param player to setup battlefield
+     */
     private void setupBoard(Player player) {
         UI.println("========================================");
         UI.printf(UI.ANSI_PURPLE + "[%s] Setting up board %n" + UI.ANSI_RESET, player.getName());
@@ -45,6 +62,12 @@ public class Controller {
         sleep(2000);
     }
 
+    /**
+     * Print board
+     *
+     * @param player board to be printed
+     * @param enemy  view
+     */
     private void printBoard(Player player, boolean enemy) {
         Field[][] board = player.getBoard();
         int sizeX = board.length;
@@ -70,6 +93,11 @@ public class Controller {
         }
     }
 
+    /**
+     * Print field
+     *
+     * @param field to be printed
+     */
     private void printField(Field field) {
         if (field instanceof Water) {
             UI.print("[ ]");
@@ -78,6 +106,11 @@ public class Controller {
         }
     }
 
+    /**
+     * Print field of enemy
+     *
+     * @param field to be printed
+     */
     private void printFieldEnemy(Field field) {
         if (field instanceof Water) {
             if (field.getFieldState().isBombed()) {
@@ -94,6 +127,11 @@ public class Controller {
         }
     }
 
+    /**
+     * Drop those ships in the open waters
+     *
+     * @param player ships to be placed
+     */
     private void setupShips(Player player) {
         Ship[] ships = player.getShips();
         printShips(ships);
@@ -103,6 +141,12 @@ public class Controller {
         }
     }
 
+    /**
+     * Place ship
+     *
+     * @param player
+     * @param ship
+     */
     private void setupShip(Player player, Ship ship) {
         UI.print("Position of " + ship.getName() + " (" + ship.getLength() + ") :");
         String inputPosition = reader.next();
@@ -136,9 +180,9 @@ public class Controller {
                 }
                 UI.print("Direction: ");
                 String inputDirection = reader.next();
-                if (player.canPlaceShip(pos[0], pos[1], inputDirectionToPosition(inputDirection), ship.getLength())) {
+                if (player.canPlaceShip(pos[0], pos[1], inputToDirection(inputDirection), ship.getLength())) {
                     //Set Ship
-                    player.placeShip(pos[0], pos[1], inputDirectionToPosition(inputDirection), ship);
+                    player.placeShip(pos[0], pos[1], inputToDirection(inputDirection), ship);
                     UI.println(UI.ANSI_GREEN + "Good stuff pirate *high fives in pirate*" + UI.ANSI_RESET);
                     isPlaced = true;
                 } else {
@@ -151,12 +195,23 @@ public class Controller {
         }
     }
 
+    /**
+     * Print available ships
+     *
+     * @param ships
+     */
     private void printShips(Ship[] ships) {
         for (Ship ship : ships) {
             UI.println(" (" + ship.getLength() + ") " + ship.getName());
         }
     }
 
+    /**
+     * Convert input to position
+     *
+     * @param input
+     * @return position
+     */
     private int[] inputToPosition(String input) {
         int[] pos = {-1, -1};
         char posY = input.charAt(0);
@@ -170,6 +225,13 @@ public class Controller {
         return pos;
     }
 
+    /**
+     * Check if input is within range of board
+     *
+     * @param pos   position
+     * @param board
+     * @return if is within range
+     */
     private boolean isPositionInRange(int[] pos, Field[][] board) {
         int y = pos[0];
         int x = pos[1];
@@ -178,7 +240,13 @@ public class Controller {
         return false;
     }
 
-    private int inputDirectionToPosition(String input) {
+    /**
+     * Convert input direction to direction
+     *
+     * @param input
+     * @return direction
+     */
+    private int inputToDirection(String input) {
         switch (input.toLowerCase()) {
             case "u":
             case "up":
@@ -197,10 +265,21 @@ public class Controller {
         }
     }
 
+    /**
+     * Is game still going or did one get slaughtered?
+     *
+     * @return if is still battling
+     */
     public boolean isGameOnGoing() {
         return isPlayerStillBreathing(player1) && isPlayerStillBreathing(player2);
     }
 
+    /**
+     * Check if player has sunken to the depth of the ocean in company of the kraken
+     *
+     * @param player to be checked
+     * @return if player is alive
+     */
     private boolean isPlayerStillBreathing(Player player) {
         for (Ship ship : player.getShips()) {
             if (ship.getHealth() > 0) {
@@ -210,6 +289,9 @@ public class Controller {
         return false;
     }
 
+    /**
+     * Play loop
+     */
     public void play() {
         UI.println("========================================");
         if (turnOne) {
@@ -226,6 +308,12 @@ public class Controller {
         sleep(2000);
     }
 
+    /**
+     * Player in turn
+     *
+     * @param player
+     * @param enemy
+     */
     private void play(Player player, Player enemy) {
         UI.printf(UI.ANSI_PURPLE + "[%s] What position u trynna hit arrrr: " + UI.ANSI_RESET, player.getName());
         String inputPosition = reader.next();
@@ -239,6 +327,9 @@ public class Controller {
         sleep(1000);
     }
 
+    /**
+     * What's the winner eating for dinner? chicken
+     */
     public void kudosToWinner() {
         String message = UI.ANSI_GREEN + "Kudos %s !" + UI.ANSI_RED + " Ya absobloodylutely beat up wazzock %s :)" + UI.ANSI_RESET;
         if (isPlayerStillBreathing(player1)) {
@@ -249,6 +340,11 @@ public class Controller {
         sleep(2500);
     }
 
+    /**
+     * Wait to continue
+     *
+     * @param millis time
+     */
     private void sleep(int millis) {
         try {
             Thread.sleep(millis);

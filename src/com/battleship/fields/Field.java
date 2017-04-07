@@ -1,10 +1,24 @@
 package com.battleship.fields;
 
-/**
- * Created by casvd on 3-4-2017.
- */
 public interface Field {
+    /**
+     * Hit it
+     *
+     * @return hit message
+     */
     String hit();
+
+    /**
+     * Set state of the field
+     *
+     * @param fieldState
+     */
     void setFieldState(FieldState fieldState);
+
+    /**
+     * Get state of the field
+     *
+     * @return state
+     */
     FieldState getFieldState();
 }

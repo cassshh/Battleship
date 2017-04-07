@@ -3,25 +3,38 @@ package com.battleship;
 import com.battleship.fields.Field;
 import com.battleship.fields.ShipComponent;
 import com.battleship.fields.Water;
-import com.battleship.ships.Ship;
-/**
- * Created by casvd on 3-4-2017.
- */
-public class Board {
-    private final int SIZE = 10;
-    private Field[][] board;
-    private Ship[] ships;
+import com.battleship.ship.Ship;
+import com.battleship.ship.ShipFactory;
+import com.battleship.ship.ShipType;
 
+public class Board {
+
+    /**
+     * Directions
+     */
     public final static int UP = 0;
     public final static int RIGHT = 1;
     public final static int DOWN = 2;
     public final static int LEFT = 3;
 
+    /**
+     * Field
+     */
+    private final int SIZE = 10;
+    private Field[][] board;
+    private Ship[] ships;
+
+    /**
+     * Constructor
+     */
     public Board() {
         initBoard();
         initShips();
     }
 
+    /**
+     * Initialize board
+     */
     public void initBoard() {
         board = new Field[SIZE][SIZE];
         for (int y = 0; y < board.length; y++) {
@@ -31,6 +44,9 @@ public class Board {
         }
     }
 
+    /**
+     * Initialize ships
+     */
     public void initShips() {
         ShipFactory shipFactory = new ShipFactory();
         ships = new Ship[]{
@@ -42,14 +58,33 @@ public class Board {
         };
     }
 
+    /**
+     * Get board
+     *
+     * @return board
+     */
     public Field[][] getBoard() {
         return board;
     }
 
+    /**
+     * Get ships
+     *
+     * @return ships
+     */
     public Ship[] getShips() {
         return ships;
     }
 
+    /**
+     * Check if ship can be placed at given place
+     *
+     * @param y      coordinate
+     * @param x      coordinate
+     * @param dir    direction
+     * @param length length of ship
+     * @return if ship can be placed
+     */
     public boolean canPlaceShip(int y, int x, int dir, int length) {
         if ((dir == UP && y - length + 1 >= 0)
                 || (dir == RIGHT && x + length <= SIZE)
@@ -68,6 +103,15 @@ public class Board {
         return false;
     }
 
+    /**
+     * Get fields
+     *
+     * @param y      coordinate
+     * @param x      coordinate
+     * @param dir    direction
+     * @param length length
+     * @return fields within selection
+     */
     private Field[] getFields(int y, int x, int dir, int length) {
         Field[] fields = new Field[length];
         for (int i = 0; i < length; i++) {
@@ -83,10 +127,25 @@ public class Board {
         return fields;
     }
 
+    /**
+     * Get field at given position
+     *
+     * @param y coordinate
+     * @param x coordinate
+     * @return field of give position
+     */
     private Field getAt(int y, int x) {
         return board[y][x];
     }
 
+    /**
+     * Place ship at given place
+     *
+     * @param y    coordinate
+     * @param x    coordinate
+     * @param dir  direction
+     * @param ship ship
+     */
     public void placeShip(int y, int x, int dir, Ship ship) {
         for (int i = 0; i < ship.getLength(); i++) {
             ShipComponent shipComponent = new ShipComponent();
@@ -98,6 +157,12 @@ public class Board {
         }
     }
 
+    /**
+     * Nuke position
+     *
+     * @param pos to be nuked
+     * @return hit message
+     */
     public String hit(int[] pos) {
         return getAt(pos[0], pos[1]).hit();
     }

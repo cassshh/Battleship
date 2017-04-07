@@ -1,23 +1,23 @@
 package com.battleship.fields;
 
-import com.battleship.Observer;
 import com.battleship.UI;
+import com.battleship.ship.Observer;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by casvd on 3-4-2017.
- */
 public class ShipComponent implements Field {
 
+    /**
+     * Fields
+     */
     private List<Observer> observers = new ArrayList<>();
     private FieldState fieldState = new UnharmedFieldState();
 
     @Override
     public String hit() {
         notifyAllObservers();
-        if (!fieldState.isBombed()){
+        if (!fieldState.isBombed()) {
             setFieldState(new NukedFieldState());
             return UI.ANSI_YELLOW + "*Insert explosion sounds*" + UI.ANSI_RESET;
         }
@@ -34,10 +34,18 @@ public class ShipComponent implements Field {
         return fieldState;
     }
 
+    /**
+     * Attach observer
+     *
+     * @param observer
+     */
     public void attach(Observer observer) {
         observers.add(observer);
     }
 
+    /**
+     * Notify all observers
+     */
     public void notifyAllObservers() {
         for (Observer observer : observers) {
             observer.update(fieldState);

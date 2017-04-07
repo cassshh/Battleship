@@ -2,12 +2,13 @@ package com.battleship.ships;
 
 import com.battleship.UI;
 import com.battleship.fields.FieldState;
+import com.battleship.ship.Ship;
 
-/**
- * Created by casvd on 6-4-2017.
- */
 public class AircraftCarrier extends Ship {
 
+    /**
+     * Fields
+     */
     private final String NAME = "Aircraft Carrier";
     private final int LENGTH = 5;
     private int health = LENGTH;
@@ -29,7 +30,7 @@ public class AircraftCarrier extends Ship {
 
     @Override
     public void update(FieldState fieldState) {
-        if(!fieldState.isBombed() && health > 0) {
+        if (!fieldState.isBombed() && health > 0) {
             health--;
             UI.printf(UI.ANSI_RED + "%s got nuked%n" + UI.ANSI_RESET, NAME);
         }

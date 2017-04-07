@@ -1,13 +1,16 @@
-package com.battleship;
+package com.battleship.ship;
 
 import com.battleship.fields.FieldState;
 import com.battleship.ships.*;
 
-/**
- * Created by casvd on 6-4-2017.
- */
 public class ShipFactory {
 
+    /**
+     * Creating ship according to type
+     *
+     * @param type of ship
+     * @return Ship of given type
+     */
     public Ship makeShip(ShipType type) {
         switch (type) {
             case AIRCRAFT_CARRIER:

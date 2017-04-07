@@ -1,9 +1,12 @@
-package com.battleship;
+package com.battleship.ship;
 
 import com.battleship.fields.FieldState;
-/**
- * Created by casvd on 6-4-2017.
- */
+
 public abstract class Observer {
+    /**
+     * Update at call
+     *
+     * @param fieldState of Field
+     */
     public abstract void update(FieldState fieldState);
 }
