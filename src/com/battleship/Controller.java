@@ -349,7 +349,6 @@ public class Controller {
         try {
             Thread.sleep(millis);
         } catch (InterruptedException e) {
-            UI.println("Kikkekcunt");
             e.printStackTrace();
         }
     }
