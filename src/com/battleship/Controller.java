@@ -54,7 +54,7 @@ public class Controller {
      */
     private void setupBoard(Player player) {
         UI.println("========================================");
-        UI.printf(UI.ANSI_PURPLE + "[%s] Setting up board %n" + UI.ANSI_RESET, player.getName());
+        UI.printf(UI.ANSI_YELLOW + "[%s] Setting up board %n" + UI.ANSI_RESET, player.getName());
         player.initBoard();
         printBoard(player, false);
         setupShips(player);
@@ -315,7 +315,7 @@ public class Controller {
      * @param enemy
      */
     private void play(Player player, Player enemy) {
-        UI.printf(UI.ANSI_PURPLE + "[%s] What position u trynna hit arrrr: " + UI.ANSI_RESET, player.getName());
+        UI.printf(UI.ANSI_YELLOW + "[%s] What position u trynna hit arrrr: " + UI.ANSI_RESET, player.getName());
         String inputPosition = reader.next();
         int[] pos = inputToPosition(inputPosition);
         if (isPositionInRange(pos, player.getBoard())) {
@@ -349,6 +349,7 @@ public class Controller {
         try {
             Thread.sleep(millis);
         } catch (InterruptedException e) {
+            UI.println("Kikkekcunt");
             e.printStackTrace();
         }
     }
