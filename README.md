@@ -2,24 +2,21 @@
 
 Command Line Interface game; Battleship
 
-**Main view**
-```bash
-Opponent's field:
-[ ][1][2][3][4][5][6][7][8][9][10]
-[A][ ][ ][X][ ][ ][ ][ ][ ][ ][  ]
-[B][ ][ ][X][ ][ ][ ][ ][O][ ][  ]
-[C][ ][ ][ ][ ][ ][ ][ ][ ][ ][  ]
-[D][ ][ ][ ][O][ ][ ][ ][ ][ ][  ]
-[E][ ][ ][ ][ ][O][ ][ ][O][ ][  ]
-[F][ ][O][ ][ ][ ][ ][ ][X][ ][  ]
-[G][ ][ ][ ][ ][ ][ ][ ][X][ ][  ]
-[H][ ][ ][ ][ ][ ][ ][ ][X][ ][  ]
-[I][ ][ ][X][ ][ ][ ][ ][ ][ ][  ]
-[J][ ][ ][ ][ ][ ][ ][ ][ ][ ][  ]
+## Setup/Install
 
-Send us the location to nuke:
-> [location]
+**Javac it like its hot**
+```bash
+$ cd src/
+$ javac com/battleship/Game.java
 ```
+
+**Start game**
+```bash
+$ java com/battleship/Game
+```
+
+*Nuke one another :)*
+
 
 ## Start Game
 -----
@@ -55,5 +52,22 @@ Ready or edit your ships?
 {{ready, move on to 2nd player}}
 ```
 
+**Main view**
+```bash
+Opponent's field:
+[ ][1][2][3][4][5][6][7][8][9][10]
+[A][ ][ ][X][ ][ ][ ][ ][ ][ ][  ]
+[B][ ][ ][X][ ][ ][ ][ ][O][ ][  ]
+[C][ ][ ][ ][ ][ ][ ][ ][ ][ ][  ]
+[D][ ][ ][ ][O][ ][ ][ ][ ][ ][  ]
+[E][ ][ ][ ][ ][O][ ][ ][O][ ][  ]
+[F][ ][O][ ][ ][ ][ ][ ][X][ ][  ]
+[G][ ][ ][ ][ ][ ][ ][ ][X][ ][  ]
+[H][ ][ ][ ][ ][ ][ ][ ][X][ ][  ]
+[I][ ][ ][X][ ][ ][ ][ ][ ][ ][  ]
+[J][ ][ ][ ][ ][ ][ ][ ][ ][ ][  ]
 
+Send us the location to nuke:
+> [location]
+```
 
